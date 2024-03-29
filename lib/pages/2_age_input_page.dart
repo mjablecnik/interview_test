@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interview_test/default_layout.dart';
 import 'package:interview_test/pages/3_bio_input_page.dart';
+import 'package:interview_test/survey.dart';
 import 'package:interview_test/widgets/survey_text.dart';
 import 'package:interview_test/widgets/submit_button.dart';
 
@@ -13,11 +14,13 @@ class AgeInputPage extends StatefulWidget {
 
 class _AgeInputPageState extends State<AgeInputPage> {
   final formKey = GlobalKey<FormState>();
+  final controller = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     formKey.currentState?.dispose();
+    controller.dispose();
   }
 
   @override
@@ -41,6 +44,7 @@ class _AgeInputPageState extends State<AgeInputPage> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
+                controller: controller,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "This field is required";
@@ -62,6 +66,7 @@ class _AgeInputPageState extends State<AgeInputPage> {
                 onPressed: () {
                   final result = formKey.currentState?.validate();
                   if (result == true) {
+                    Survey.of(context).updateAge(int.parse(controller.text));
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const BioInputPage(),

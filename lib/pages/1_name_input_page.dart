@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interview_test/default_layout.dart';
 import 'package:interview_test/pages/2_age_input_page.dart';
-import 'package:interview_test/popup.dart';
+import 'package:interview_test/survey.dart';
 import 'package:interview_test/widgets/survey_text.dart';
 import 'package:interview_test/widgets/submit_button.dart';
 
@@ -15,11 +15,13 @@ class NameInputPage extends StatefulWidget {
 class _NameInputPageState extends State<NameInputPage> {
 
   final formKey = GlobalKey<FormState>();
+  final controller = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     formKey.currentState?.dispose();
+    controller.dispose();
   }
 
   @override
@@ -36,6 +38,7 @@ class _NameInputPageState extends State<NameInputPage> {
               const SurveyText(text: "Write your name:"),
               const SizedBox(height: 30),
               TextFormField(
+                controller: controller,
                 style: const TextStyle(fontSize: 20),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -55,6 +58,7 @@ class _NameInputPageState extends State<NameInputPage> {
                 onPressed: () {
                   final result = formKey.currentState?.validate();
                   if (result == true) {
+                    Survey.of(context).updateName(controller.text);
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const AgeInputPage(),
