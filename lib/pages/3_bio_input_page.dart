@@ -12,38 +12,60 @@ class BioInputPage extends StatefulWidget {
 }
 
 class _BioInputPageState extends State<BioInputPage> {
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    formKey.currentState?.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: "Bio",
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            const Spacer(),
-            const SurveyText(text: "Write your bio:"),
-            const SizedBox(height: 30),
-            TextFormField(
-              style: const TextStyle(fontSize: 20),
-              minLines: 3,
-              maxLines: 20,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            const Spacer(),
-            SubmitButton(
-              label: "Finish",
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const FinishPage(),
+      child: Form(
+        key: formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              const Spacer(),
+              const SurveyText(text: "Write your bio:"),
+              const SizedBox(height: 30),
+              TextFormField(
+                style: const TextStyle(fontSize: 20),
+                minLines: 3,
+                maxLines: 20,
+                maxLength: 1000,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "This field is required";
+                  }
+                  return null;
+                },
+              ),
+              const Spacer(),
+              SubmitButton(
+                label: "Finish",
+                onPressed: () {
+                  final result = formKey.currentState?.validate();
+                  if (result == true) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const FinishPage(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
