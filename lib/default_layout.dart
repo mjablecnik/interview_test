@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:interview_test/popup.dart';
 
 class DefaultLayout extends StatelessWidget {
@@ -13,8 +14,17 @@ class DefaultLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Navigator.of(context).canPop() ? Future.value(true) : Popup.showCloseDialog(context),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) return;
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop(true);
+        } else {
+          final bool shouldPop = await Popup.showCloseDialog(context);
+          if (shouldPop) SystemNavigator.pop();
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
