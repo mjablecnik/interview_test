@@ -21,4 +21,40 @@ class Popup {
 
     return result ?? false;
   }
+
+  static info(
+    BuildContext context, {
+    required String title,
+    required String message,
+  }) async {
+    await PopupDialog(context: context).message(
+      title: title,
+      message: message,
+      type: PopupType.info,
+    );
+  }
+
+  static warning(
+    BuildContext context, {
+    required String title,
+    required String message,
+  }) async {
+    await PopupDialog(context: context).message(
+      title: title,
+      message: message,
+      type: PopupType.warning,
+    );
+  }
+
+  static error(
+    BuildContext context, {
+    required String title,
+    required String message,
+  }) async {
+    await PopupDialog(context: context).message(
+      title: title,
+      message: message,
+      type: PopupType.error,
+    );
+  }
 }
