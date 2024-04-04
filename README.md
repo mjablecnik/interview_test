@@ -4,7 +4,7 @@ Simple project for interview candidates.
 
 ## Tasks:
 
-1) Setup and run project (minimal Flutter version: 3.19.0)
+1) Setup and run project (minimal Flutter version: 3.19.0, run it in Android emulator)
 2) Add validations: <br />
    Name field: is required <br />
    Age field: is required, must be number and value must be higher than 0 and lower then 150 <br /> 
